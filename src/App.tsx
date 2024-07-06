@@ -1,35 +1,52 @@
-import { useState } from 'react';
-import reactLogo from './assets/react.svg';
-import viteLogo from '/vite.svg';
+import React, { Component } from 'react';
 import './App.css';
+import { StorageService } from './utils/StorageService';
 
-function App() {
-  const [count, setCount] = useState(0);
+interface AppProps {}
 
-  return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+interface AppState {
+  searchTerm: string;
+}
+
+class App extends Component<AppProps, AppState> {
+  storageService = new StorageService();
+
+  state: AppState = {
+    searchTerm: '',
+  };
+
+  componentDidMount() {
+    const term = this.storageService.getTerm();
+    if (term !== null) {
+      this.setState({ searchTerm: term });
+    }
+  }
+
+  handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    this.setState({ searchTerm: event.target.value });
+  };
+
+  handleSearch = () => {
+    if (this.state.searchTerm.trim() !== '') {
+      this.storageService.setTerm(this.state.searchTerm);
+    }
+  };
+
+  render() {
+    return (
+      <div className="content">
+        <div className="search_side">
+          <input
+            type="text"
+            value={this.state.searchTerm}
+            onChange={this.handleInputChange}
+          />
+          <button onClick={this.handleSearch}>SEARCH</button>
+        </div>
+        <div className="result_side">result....</div>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  );
+    );
+  }
 }
 
 export default App;
