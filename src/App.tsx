@@ -4,6 +4,7 @@ import { StorageService } from './utils/StorageService';
 import { ApiService } from './utils/ApiService';
 import { PEOPLE_SEARCH_URL } from './constants';
 import { AppProps, AppState, Character } from './Interfaces';
+import { ExtractIdFromUrl } from './utils/ExtractIdFromUrl';
 
 class App extends Component<AppProps, AppState> {
   storageService = new StorageService();
@@ -61,11 +62,6 @@ class App extends Component<AppProps, AppState> {
       });
   };
 
-  extractIdFromUrl = (url: string): string => {
-    const match = url.match(/\/(\d+)\/$/);
-    return match ? match[1] : 'Unknown';
-  };
-
   throwError = () => {
     this.setState({ error: true, errorMessage: 'Throw manual error for test' });
   };
@@ -95,10 +91,10 @@ class App extends Component<AppProps, AppState> {
           {searchData && (
             <ul>
               {searchData.map((character: Character) => (
-                <li key={this.extractIdFromUrl(character.url)}>
+                <li key={ExtractIdFromUrl.extract(character.url)}>
                   <div className="character-header">
                     <div className="character-id">
-                      ID: {this.extractIdFromUrl(character.url)}
+                      ID: {ExtractIdFromUrl.extract(character.url)}
                     </div>
                     <div className="character-name">{character.name}</div>
                   </div>
