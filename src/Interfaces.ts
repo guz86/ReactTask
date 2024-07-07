@@ -19,6 +19,7 @@ export interface AppState {
   searchData: Character[] | null;
   error: boolean;
   errorMessage: string;
+  loading: boolean;
 }
 
 export interface ErrorBoundaryProps {

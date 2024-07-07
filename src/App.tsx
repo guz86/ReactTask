@@ -14,6 +14,7 @@ class App extends Component<AppProps, AppState> {
     searchData: null,
     error: false,
     errorMessage: '',
+    loading: false,
   };
 
   componentDidMount() {
@@ -44,14 +45,19 @@ class App extends Component<AppProps, AppState> {
   };
 
   getSearchData = (term: string) => {
+    this.setState({ loading: true });
     const url = `${PEOPLE_SEARCH_URL}${term}`;
     this.getData
       .fetchData<Character>(url)
       .then((searchData) => {
-        this.setState({ searchData, error: false });
+        this.setState({ searchData, error: false, loading: false });
       })
       .catch(() => {
-        this.setState({ error: true, errorMessage: 'Error getData failed' });
+        this.setState({
+          error: true,
+          errorMessage: 'Error getData failed',
+          loading: false,
+        });
       });
   };
 
@@ -65,7 +71,7 @@ class App extends Component<AppProps, AppState> {
   };
 
   render() {
-    const { searchTerm, searchData, error, errorMessage } = this.state;
+    const { searchTerm, searchData, error, errorMessage, loading } = this.state;
 
     if (error) {
       throw new Error('Manual error for test');
@@ -84,6 +90,7 @@ class App extends Component<AppProps, AppState> {
         </div>
         <div className="result_side">
           <h2>Search result: {searchTerm}</h2>
+          {loading && <div className="spinner"></div>}
           {error && <p className="error-message">{errorMessage}</p>}
           {searchData && (
             <ul>
