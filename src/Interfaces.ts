@@ -1,3 +1,5 @@
+import { ReactNode } from 'react';
+
 export interface Character {
   name: string;
   height: string;
@@ -15,4 +17,15 @@ export interface AppProps {}
 export interface AppState {
   searchTerm: string;
   searchData: Character[] | null;
+  error: boolean;
+  errorMessage: string;
+}
+
+export interface ErrorBoundaryProps {
+  children: ReactNode;
+}
+
+export interface ErrorBoundaryState {
+  hasError: boolean;
+  errorMessage: string;
 }

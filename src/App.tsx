@@ -12,6 +12,8 @@ class App extends Component<AppProps, AppState> {
   state: AppState = {
     searchTerm: '',
     searchData: null,
+    error: false,
+    errorMessage: '',
   };
 
   componentDidMount() {
@@ -23,7 +25,11 @@ class App extends Component<AppProps, AppState> {
   }
 
   handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    this.setState({ searchTerm: event.target.value });
+    this.setState({
+      searchTerm: event.target.value,
+      error: false,
+      errorMessage: '',
+    });
   };
 
   handleSearch = () => {
@@ -37,9 +43,14 @@ class App extends Component<AppProps, AppState> {
 
   getSearchData = (term: string) => {
     const url = `${PEOPLE_SEARCH_URL}${term}`;
-    this.getData.fetchData<Character>(url).then((searchData) => {
-      this.setState({ searchData });
-    });
+    this.getData
+      .fetchData<Character>(url)
+      .then((searchData) => {
+        this.setState({ searchData, error: false });
+      })
+      .catch(() => {
+        this.setState({ error: true, errorMessage: 'Error getData failed' });
+      });
   };
 
   extractIdFromUrl = (url: string): string => {
@@ -47,8 +58,17 @@ class App extends Component<AppProps, AppState> {
     return match ? match[1] : 'Unknown';
   };
 
+  throwError = () => {
+    this.setState({ error: true, errorMessage: 'Throw manual error for test' });
+  };
+
   render() {
-    const { searchTerm, searchData } = this.state;
+    const { searchTerm, searchData, error, errorMessage } = this.state;
+
+    if (error) {
+      throw new Error('Manual error for test');
+    }
+
     return (
       <div className="content">
         <div className="search_side">
@@ -58,9 +78,11 @@ class App extends Component<AppProps, AppState> {
             onChange={this.handleInputChange}
           />
           <button onClick={this.handleSearch}>SEARCH</button>
+          <button onClick={this.throwError}>Сlick to test</button>
         </div>
         <div className="result_side">
           <h2>Search result: {searchTerm}</h2>
+          {error && <p className="error-message">{errorMessage}</p>}
           {searchData && (
             <ul>
               {searchData.map((character: Character) => (
