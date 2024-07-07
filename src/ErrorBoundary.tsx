@@ -22,7 +22,7 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
     if (this.state.hasError) {
       return (
         <div className="error-boundary">
-          <h1>{this.state.errorMessage}</h1>
+          <h1>{this.state.errorMessage} : fallback UI below</h1>
           {this.props.children}
         </div>
       );
