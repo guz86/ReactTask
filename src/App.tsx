@@ -18,9 +18,11 @@ class App extends Component<AppProps, AppState> {
 
   componentDidMount() {
     const term = this.storageService.getTerm();
-    if (term !== null) {
+    if (term) {
       this.setState({ searchTerm: term });
       this.getSearchData(term);
+    } else {
+      this.getSearchData('');
     }
   }
 
