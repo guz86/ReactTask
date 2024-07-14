@@ -5,20 +5,20 @@ import { AppProps, Character } from '../Interfaces';
 import SearchInput from '../components/SearchInput/SearchInput';
 import SearchResult from '../components/SearchResult/SearchResult';
 import { fetchData } from '../utils/apiService';
-import { getTerm, setTerm } from '../utils/storageService';
+import useLocalStorage from '../hooks/useLocalStorage';
+import { getTerm } from '../utils/storageService';
 
 const App: React.FC<AppProps> = () => {
-  const [searchTerm, setSearchTerm] = useState<string>('');
+  const [searchTerm, setSearchTerm] = useLocalStorage();
   const [searchData, setSearchData] = useState<Character[] | null>(null);
   const [error, setError] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
-    const term = getTerm();
-    if (term) {
-      setSearchTerm(term);
-      getSearchData(term);
+    const storedTerm = getTerm();
+    if (storedTerm) {
+      getSearchData(storedTerm.trim());
     } else {
       getSearchData('');
     }
@@ -32,7 +32,6 @@ const App: React.FC<AppProps> = () => {
 
   const handleSearch = () => {
     if (searchTerm.trim() !== '') {
-      setTerm(searchTerm);
       getSearchData(searchTerm);
     } else {
       getSearchData('');
