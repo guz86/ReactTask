@@ -14,13 +14,13 @@ export interface Character {
 
 export interface AppProps {}
 
-export interface AppState {
-  searchTerm: string;
-  searchData: Character[] | null;
-  error: boolean;
-  errorMessage: string;
-  loading: boolean;
-}
+// export interface AppState {
+//   searchTerm: string;
+//   searchData: Character[] | null;
+//   error: boolean;
+//   errorMessage: string;
+//   loading: boolean;
+// }
 
 export interface ErrorBoundaryProps {
   children: ReactNode;

@@ -1,97 +1,86 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css';
-import { StorageService } from '../utils/StorageService';
-import { ApiService } from '../utils/ApiService';
 import { PEOPLE_SEARCH_URL } from '../constants';
-import { AppProps, AppState, Character } from '../Interfaces';
+import { AppProps, Character } from '../Interfaces';
 import SearchInput from '../components/SearchInput/SearchInput';
 import SearchResult from '../components/SearchResult/SearchResult';
+import { fetchData } from '../utils/apiService';
+import { getTerm, setTerm } from '../utils/storageService';
 
-class App extends Component<AppProps, AppState> {
-  storageService = new StorageService();
-  getData = new ApiService();
+const App: React.FC<AppProps> = () => {
+  const [searchTerm, setSearchTerm] = useState<string>('');
+  const [searchData, setSearchData] = useState<Character[] | null>(null);
+  const [error, setError] = useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState<string>('');
+  const [loading, setLoading] = useState<boolean>(false);
 
-  state: AppState = {
-    searchTerm: '',
-    searchData: null,
-    error: false,
-    errorMessage: '',
-    loading: false,
-  };
-
-  componentDidMount() {
-    const term = this.storageService.getTerm();
+  useEffect(() => {
+    const term = getTerm();
     if (term) {
-      this.setState({ searchTerm: term });
-      this.getSearchData(term);
+      setSearchTerm(term);
+      getSearchData(term);
     } else {
-      this.getSearchData('');
+      getSearchData('');
     }
-  }
+  }, []);
 
-  handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    this.setState({
-      searchTerm: event.target.value,
-      error: false,
-      errorMessage: '',
-    });
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(event.target.value);
+    setError(false);
+    setErrorMessage('');
   };
 
-  handleSearch = () => {
-    if (this.state.searchTerm.trim() !== '') {
-      this.storageService.setTerm(this.state.searchTerm);
-      this.getSearchData(this.state.searchTerm);
+  const handleSearch = () => {
+    if (searchTerm.trim() !== '') {
+      setTerm(searchTerm);
+      getSearchData(searchTerm);
     } else {
-      this.getSearchData('');
+      getSearchData('');
     }
   };
 
-  getSearchData = (term: string) => {
-    this.setState({ loading: true });
+  const getSearchData = (term: string) => {
+    setLoading(true);
     const url = `${PEOPLE_SEARCH_URL}${term}`;
-    this.getData
-      .fetchData<Character>(url)
+    fetchData<Character>(url)
       .then((searchData) => {
-        this.setState({ searchData, error: false, loading: false });
+        setSearchData(searchData);
+        setError(false);
+        setLoading(false);
       })
       .catch(() => {
-        this.setState({
-          error: true,
-          errorMessage: 'Error getData failed',
-          loading: false,
-        });
+        setError(true);
+        setErrorMessage('Error getting data');
+        setLoading(false);
       });
   };
 
-  throwError = () => {
-    this.setState({ error: true, errorMessage: 'Throw manual error for test' });
+  const throwError = () => {
+    setError(true);
+    setErrorMessage('Throw manual error for test');
   };
 
-  render() {
-    const { searchTerm, searchData, error, errorMessage, loading } = this.state;
-
-    if (error) {
-      throw new Error('Manual error for test');
-    }
-
-    return (
-      <div className="content">
-        <SearchInput
-          searchTerm={searchTerm}
-          onInputChange={this.handleInputChange}
-          onSearch={this.handleSearch}
-          onErrorTest={this.throwError}
-        />
-        <SearchResult
-          loading={loading}
-          error={error}
-          errorMessage={errorMessage}
-          searchTerm={searchTerm}
-          searchData={searchData}
-        />
-      </div>
-    );
+  if (error) {
+    throw new Error('Manual error for test');
   }
-}
+
+  return (
+    <div className="content">
+      <SearchInput
+        searchTerm={searchTerm}
+        onInputChange={handleInputChange}
+        onSearch={handleSearch}
+        onErrorTest={throwError}
+      />
+      <SearchResult
+        loading={loading}
+        error={error}
+        errorMessage={errorMessage}
+        searchTerm={searchTerm}
+        searchData={searchData}
+      />
+    </div>
+  );
+};
 
 export default App;

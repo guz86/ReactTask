@@ -1,12 +1,9 @@
 import { STORAGE_KEY } from '../constants';
 
-export class StorageService {
-  getTerm(): string | null {
-    const term = localStorage.getItem(STORAGE_KEY);
-    return term;
-  }
+export const getTerm = (): string | null => {
+  return localStorage.getItem(STORAGE_KEY);
+};
 
-  setTerm(value: string) {
-    localStorage.setItem(STORAGE_KEY, value);
-  }
-}
+export const setTerm = (value: string): void => {
+  localStorage.setItem(STORAGE_KEY, value);
+};
