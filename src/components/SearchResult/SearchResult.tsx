@@ -9,6 +9,7 @@ const SearchResult: React.FC<SearchResultProps> = ({
   errorMessage,
   searchTerm,
   searchData,
+  items,
 }) => {
   if (error) {
     throw new Error('Manual error for test');
@@ -17,6 +18,7 @@ const SearchResult: React.FC<SearchResultProps> = ({
   return (
     <div className="result_side">
       <h2>Search result: {searchTerm}</h2>
+      {/* <h2>Items: {items}</h2> */}
       {loading && <div className="spinner"></div>}
       {error && <p className="error-message">{errorMessage}</p>}
       {searchData && (
@@ -42,6 +44,7 @@ const SearchResult: React.FC<SearchResultProps> = ({
           ))}
         </ul>
       )}
+      <>{items}</>
     </div>
   );
 };

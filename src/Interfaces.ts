@@ -44,4 +44,5 @@ export interface SearchResultProps {
   errorMessage: string;
   searchTerm: string;
   searchData: Character[] | null;
+  items: number;
 }
