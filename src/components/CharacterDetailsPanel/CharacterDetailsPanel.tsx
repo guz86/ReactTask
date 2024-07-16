@@ -1,6 +1,6 @@
 import React from 'react';
 import './CharacterDetailsPanel.css';
-import { Character } from '../Interfaces';
+import { Character } from '../../Interfaces';
 
 interface CharacterDetailsPanelProps {
   character: Character;

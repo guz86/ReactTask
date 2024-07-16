@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import './SearchResult.css';
 import { Character, SearchResultProps } from '../../Interfaces';
 import { extractIdFromUrl } from '../../utils/extractIdFromUrl';
-import CharacterDetailsPanel from '../CharacterDetailsPanel';
+import CharacterDetailsPanel from '../CharacterDetailsPanel/CharacterDetailsPanel';
 
 const SearchResult: React.FC<SearchResultProps> = ({
   loading,
