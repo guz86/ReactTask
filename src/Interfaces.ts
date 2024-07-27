@@ -14,14 +14,6 @@ export interface Character {
 
 export interface AppProps {}
 
-// export interface AppState {
-//   searchTerm: string;
-//   searchData: Character[] | null;
-//   error: boolean;
-//   errorMessage: string;
-//   loading: boolean;
-// }
-
 export interface ErrorBoundaryProps {
   children: ReactNode;
 }
@@ -35,7 +27,7 @@ export interface SearchInputProps {
   searchTerm: string;
   onInputChange: (event: ChangeEvent<HTMLInputElement>) => void;
   onSearch: () => void;
-  onErrorTest: () => void;
+  //onErrorTest: () => void;
 }
 
 export interface SearchResultProps {
@@ -43,6 +35,11 @@ export interface SearchResultProps {
   error: boolean;
   errorMessage: string;
   searchTerm: string;
-  searchData: Character[] | null;
+  searchData: Character[];
   items: number;
+}
+
+export interface ApiResponse {
+  results: Character[];
+  count: number;
 }

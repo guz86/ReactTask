@@ -1,79 +1,40 @@
 import React, { useState, useEffect } from 'react';
-import { PEOPLE_SEARCH_URL } from './constants';
-import { AppProps, Character } from './Interfaces';
+import { AppProps } from './Interfaces';
 import SearchInput from './components/SearchInput/SearchInput';
 import SearchResult from './components/SearchResult/SearchResult';
-import { fetchDataCount } from './utils/fetchDataCount';
-import { fetchData } from './utils/fetchData';
 import useLocalStorage from './hooks/useLocalStorage';
-import { getTerm } from './utils/storageService';
 import Pagination from './components/Pagination/Pagination';
 import { useNavigate } from 'react-router-dom';
+import { useSearchCharactersQuery } from './apiSlice';
 
-const App: React.FC<AppProps> = () => {
+const Results: React.FC<AppProps> = () => {
   const [searchTerm, setSearchTerm] = useLocalStorage();
-  const [searchData, setSearchData] = useState<Character[] | null>(null);
-  const [error, setError] = useState<boolean>(false);
-  const [errorMessage, setErrorMessage] = useState<string>('');
-  const [loading, setLoading] = useState<boolean>(false);
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const [items, setItems] = useState<number>(1);
   const navigate = useNavigate();
+  const [query, setQuery] = useState<string>('');
+
+  const { data, error, isLoading } = useSearchCharactersQuery({
+    term: query,
+    page: currentPage,
+  });
 
   useEffect(() => {
-    const storedTerm = getTerm();
-    if (storedTerm) {
-      getSearchData(storedTerm.trim(), 1);
-    } else {
-      getSearchData('', 1);
-    }
-  }, []);
-
-  useEffect(() => {
-    getSearchData(searchTerm.trim(), currentPage);
     navigate(`?page=${currentPage}`);
-  }, [currentPage, navigate, searchTerm]);
+  }, [currentPage, navigate]);
+
+  useEffect(() => {
+    if (searchTerm) {
+      setQuery(searchTerm);
+    }
+  }, [searchTerm]);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value);
-    setError(false);
-    setErrorMessage('');
   };
 
   const handleSearch = () => {
-    if (searchTerm.trim() !== '') {
-      getSearchData(searchTerm, 1);
-    } else {
-      getSearchData('', 1);
-    }
-  };
-
-  const getSearchData = (term: string, page: number) => {
-    setLoading(true);
-    const url = `${PEOPLE_SEARCH_URL}${term}&page=${page}`;
-    fetchData<Character>(url)
-      .then((searchData) => {
-        setSearchData(searchData);
-        setError(false);
-        setLoading(false);
-      })
-      .catch(() => {
-        setError(true);
-        setErrorMessage('Error getting data');
-        setLoading(false);
-      });
-    fetchDataCount(url)
-      .then((searchData) => {
-        setItems(searchData);
-      })
-      .catch(() => {
-        setErrorMessage('Error fetchDataCount data');
-      });
-  };
-
-  const throwError = () => {
-    setError(true);
-    setErrorMessage('Throw manual error for test');
+    setQuery(searchTerm);
+    setCurrentPage(1);
   };
 
   if (error) {
@@ -86,25 +47,25 @@ const App: React.FC<AppProps> = () => {
         searchTerm={searchTerm}
         onInputChange={handleInputChange}
         onSearch={handleSearch}
-        onErrorTest={throwError}
+        //onErrorTest={throwError}
       />
       <SearchResult
-        loading={loading}
-        error={error}
-        errorMessage={errorMessage}
+        loading={isLoading}
+        error={!!error}
+        errorMessage={error ? error : ''}
         searchTerm={searchTerm}
-        searchData={searchData}
-        items={items}
+        searchData={data?.results || []}
+        items={data?.count || 0}
       />
-      {!loading && (
+      {!isLoading && (data?.count ?? 0) > 0 && (
         <Pagination
           currentPage={currentPage}
           onPageChange={setCurrentPage}
-          totalItems={items}
+          totalItems={data?.count || 0}
         />
       )}
     </div>
   );
 };
 
-export default App;
+export default Results;
