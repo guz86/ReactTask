@@ -16,8 +16,10 @@ const selectedItemsSlice = createSlice({
     deselectItem: (state, action: PayloadAction<string>) => {
       return state.filter((id) => id !== action.payload);
     },
+    clearSelection: () => initialState,
   },
 });
 
-export const { selectItem, deselectItem } = selectedItemsSlice.actions;
+export const { selectItem, deselectItem, clearSelection } =
+  selectedItemsSlice.actions;
 export default selectedItemsSlice.reducer;

@@ -1,6 +1,10 @@
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectItem, deselectItem } from '../../selectedItemsSlice';
+import {
+  selectItem,
+  deselectItem,
+  clearSelection,
+} from '../../selectedItemsSlice';
 import './SearchResult.css';
 import { Character, SearchResultProps } from '../../Interfaces';
 import { extractIdFromUrl } from '../../utils/extractIdFromUrl';
@@ -36,6 +40,10 @@ const SearchResult: React.FC<SearchResultProps> = ({
 
   const handleClosePanel = () => {
     setSelectedCharacter(null); // Reset selectedCharacter to close the panel
+  };
+
+  const handleUnselectAll = () => {
+    dispatch(clearSelection());
   };
 
   if (error) {
@@ -81,7 +89,14 @@ const SearchResult: React.FC<SearchResultProps> = ({
             })}
           </ul>
         )}
-        <>All: {items}</>
+        <>
+          All: {items}
+          {selectedItems.length > 0 && (
+            <button onClick={handleUnselectAll} className="unselect-all-button">
+              Unselect all
+            </button>
+          )}
+        </>
       </div>
       {selectedCharacter && (
         <CharacterDetailsPanel
