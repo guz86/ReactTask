@@ -6,6 +6,9 @@ import useLocalStorage from './hooks/useLocalStorage';
 import Pagination from './components/Pagination/Pagination';
 import { useNavigate } from 'react-router-dom';
 import { useSearchCharactersQuery } from './apiSlice';
+import { useSelector } from 'react-redux';
+import { RootState } from './store';
+import Notification from './components/Notification/Notification';
 
 const Results: React.FC<AppProps> = () => {
   const [searchTerm, setSearchTerm] = useLocalStorage();
@@ -41,8 +44,11 @@ const Results: React.FC<AppProps> = () => {
     throw new Error('Manual error for test');
   }
 
+  const selectedItems = useSelector((state: RootState) => state.selectedItems);
+
   return (
     <div className="content">
+      <Notification count={selectedItems.length} />
       <SearchInput
         searchTerm={searchTerm}
         onInputChange={handleInputChange}
