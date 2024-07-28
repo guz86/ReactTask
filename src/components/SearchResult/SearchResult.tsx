@@ -10,6 +10,7 @@ import { Character, SearchResultProps } from '../../Interfaces';
 import { extractIdFromUrl } from '../../utils/extractIdFromUrl';
 import CharacterDetailsPanel from '../CharacterDetailsPanel/CharacterDetailsPanel';
 import { RootState } from '../../store';
+import DownloadButton from '../DownloadButton/DownloadButton';
 
 const SearchResult: React.FC<SearchResultProps> = ({
   loading,
@@ -95,6 +96,9 @@ const SearchResult: React.FC<SearchResultProps> = ({
             <button onClick={handleUnselectAll} className="unselect-all-button">
               Unselect all
             </button>
+          )}
+          {selectedItems.length > 0 && (
+            <DownloadButton selectedItems={selectedItems} />
           )}
         </>
       </div>
