@@ -34,12 +34,23 @@
 
 .result_side .character-header {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
 }
 
 .result_side .character-header .character-id {
   font-weight: bold;
+  margin: 5px;
+}
+.character-info {
+  display: flex;
+  align-items: center;
+}
+.details-button {
+  text-align: left;
+}
+.check-input {
+  margin: 10px;
 }
 
 .result_side .character-name {
