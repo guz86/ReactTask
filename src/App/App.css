@@ -13,3 +13,18 @@ body {
   max-width: 1400px;
   padding: 20px;
 }
+
+.light {
+  --background-color: #d1d1e0;
+  --text-color: black;
+}
+
+.dark {
+  --background-color: #2a2a40;
+  --text-color: white;
+}
+
+body {
+  background-color: var(--background-color);
+  color: var(--text-color);
+}
