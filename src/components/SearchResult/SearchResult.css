@@ -1,0 +1,133 @@
+.search-result-container {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.result_side {
+  width: 100%;
+  max-width: 800px;
+  background-color: #2a2a40;
+  border-radius: 8px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+  padding: 20px;
+  color: #d1d1e0;
+}
+
+.result_side h2 {
+  margin-bottom: 20px;
+}
+
+.result_side ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.result_side li {
+  border-bottom: 1px solid #444;
+  padding: 15px 0;
+}
+
+.result_side li:last-child {
+  border-bottom: none;
+}
+
+.result_side .character-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.result_side .character-header .character-id {
+  font-weight: bold;
+  margin: 5px;
+}
+.character-info {
+  display: flex;
+  align-items: center;
+}
+.details-button {
+  text-align: left;
+}
+.check-input {
+  margin: 10px;
+}
+
+.result_side .character-name {
+  font-size: 1.2em;
+  font-weight: bold;
+}
+
+.result_side .character-details {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.result_side .character-details div {
+  flex: 1 1 45%;
+  background-color: #3a3a50;
+  border: 1px solid #444;
+  border-radius: 4px;
+  padding: 10px;
+  text-align: center;
+}
+
+.spinner {
+  margin: 0 auto;
+  width: 50px;
+  height: 50px;
+  position: relative;
+}
+
+.spinner:before {
+  content: '';
+  box-sizing: border-box;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 40px;
+  height: 40px;
+  margin: -20px 0 0 -20px;
+  border-radius: 50%;
+  border: 3px solid #ccc;
+  border-top-color: #333;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.error-message {
+  color: red;
+  font-weight: bold;
+}
+
+.result_side .character-header button {
+  background-color: #3f3f4e;
+  color: #ffffff;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-left: 10px;
+}
+
+.result_side .character-header button:hover {
+  background-color: #6d6d74;
+}
+
+.unselect-all-button {
+  background-color: #3f3f4e;
+  color: #ffffff;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin: 10px;
+}
