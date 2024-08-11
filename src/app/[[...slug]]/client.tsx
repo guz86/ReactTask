@@ -6,7 +6,7 @@ import { Provider } from 'react-redux';
 import { store } from '../../store';
 import { ThemeProvider } from '../../ThemeContext';
 
-const App = dynamic(() => import('../../app/App'), { ssr: false });
+const App = dynamic(() => import('../pages/index'), { ssr: false });
 
 export function ClientOnly() {
   return (
