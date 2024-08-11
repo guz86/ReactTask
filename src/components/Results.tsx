@@ -1,21 +1,20 @@
+'use client';
 import React, { useState, useEffect } from 'react';
 import { AppProps } from '../Interfaces';
 import SearchInput from './SearchInput/SearchInput';
 import SearchResult from './SearchResult/SearchResult';
 import useLocalStorage from '../hooks/useLocalStorage';
 import Pagination from './Pagination/Pagination';
-//import { useNavigate } from 'react-router-dom';
 import { useSearchCharactersQuery } from '../apiSlice';
 import { useSelector } from 'react-redux';
 import { RootState } from '../store';
 import Notification from './Notification/Notification';
-//import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 
 const Results: React.FC<AppProps> = () => {
   const [searchTerm, setSearchTerm] = useLocalStorage();
   const [currentPage, setCurrentPage] = useState<number>(1);
-  //const navigate = useNavigate();
-  //const router = useRouter();
+  const router = useRouter();
   const [query, setQuery] = useState<string>('');
 
   const { data, error, isLoading } = useSearchCharactersQuery({
@@ -23,16 +22,9 @@ const Results: React.FC<AppProps> = () => {
     page: currentPage,
   });
 
-  // useEffect(() => {
-  //   navigate(`?page=${currentPage}`);
-  // }, [currentPage, navigate]);
-
-  // useEffect(() => {
-  //   router.push({
-  //     pathname: '/',
-  //     query: { page: currentPage, term: query },
-  //   });
-  // }, [currentPage, query, router]);
+  useEffect(() => {
+    router.push(`/?page=${currentPage}&term=${query}`);
+  }, [currentPage, query, router]);
 
   useEffect(() => {
     if (searchTerm) {

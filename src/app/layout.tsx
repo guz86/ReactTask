@@ -1,4 +1,6 @@
-import type { Metadata } from 'next';
+import './index.css';
+import React from 'react';
+import { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: 'Vite + React + TS',
