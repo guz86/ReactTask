@@ -16,6 +16,7 @@ export const Main = () => {
             <p>Email: {user.email}</p>
             <p>Password: {user.password}</p>
             <p>Gender: {user.gender}</p>
+            <p>Terms accepted: {user.termsAccepted.toString()}</p>
           </div>
         ) : (
           <p>No data available</p>

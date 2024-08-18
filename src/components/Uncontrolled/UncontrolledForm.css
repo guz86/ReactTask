@@ -53,3 +53,10 @@
   gap: 0rem;
   max-width: 100px;
 }
+
+.checkbox label {
+  display: flex;
+  gap: 0rem;
+  max-width: 100px;
+  justify-content: space-evenly;
+}

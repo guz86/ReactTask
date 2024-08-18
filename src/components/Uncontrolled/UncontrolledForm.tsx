@@ -10,6 +10,7 @@ interface IFormInput {
   email: string;
   password: string;
   gender: string;
+  termsAccepted: boolean;
 }
 
 export const UncontrolledForm = () => {
@@ -22,6 +23,7 @@ export const UncontrolledForm = () => {
     email: '',
     password: '',
     gender: '',
+    termsAccepted: false,
   });
   const [errors, setErrors] = useState<
     Partial<Record<keyof IFormInput, string>>
@@ -67,12 +69,18 @@ export const UncontrolledForm = () => {
     }));
   };
 
+  const handleTermsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      termsAccepted: e.target.checked,
+    }));
+  };
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const newErrors: Partial<Record<keyof IFormInput, string>> = {};
 
-    // Проверка обязательных полей и их значений
     if (!formData.name) {
       newErrors.name = 'Name is required';
     } else if (!/^[A-ZА-Я]/.test(formData.name)) {
@@ -104,13 +112,24 @@ export const UncontrolledForm = () => {
       newErrors.password = 'Passwords must match';
     }
 
+    if (!formData.termsAccepted) {
+      newErrors.termsAccepted = 'You must accept the terms and conditions';
+    }
+
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
       return;
     }
 
     dispatch(setUserData({ ...formData, password: formData.password }));
-    setFormData({ name: '', age: 0, email: '', password: '', gender: '' });
+    setFormData({
+      name: '',
+      age: 0,
+      email: '',
+      password: '',
+      gender: '',
+      termsAccepted: false,
+    });
     setConfirmPassword('');
     navigate('/');
   };
@@ -223,6 +242,23 @@ export const UncontrolledForm = () => {
               Other
             </label>
           </div>
+        </div>
+
+        <div className="checkbox">
+          <label>
+            <input
+              type="checkbox"
+              name="termsAccepted"
+              checked={formData.termsAccepted}
+              onChange={handleTermsChange}
+            />
+          </label>
+          <>I accept the Terms and Conditions</>
+        </div>
+        <div>
+          {errors.termsAccepted && (
+            <p className="error-message">{errors.termsAccepted}</p>
+          )}
         </div>
 
         <input type="submit" value="Submit" />
