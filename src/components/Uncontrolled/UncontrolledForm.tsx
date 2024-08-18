@@ -2,6 +2,7 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { useAppDispatch } from '../../app/store';
 import { setUserData } from '../../app/features/reacthookform/reacthookformSlice';
 import { useNavigate } from 'react-router-dom';
+import './UncontrolledForm.css';
 
 export const UncontrolledForm = () => {
   interface IFormInput {
@@ -21,19 +22,21 @@ export const UncontrolledForm = () => {
   return (
     <>
       <h1>Uncontrolled Form</h1>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <>
-          <label>Name</label>
-          <input {...register('name')} />
-        </>
+      <>
+        <form className="uncontrolledForm" onSubmit={handleSubmit(onSubmit)}>
+          <div>
+            <label>Name</label>
+            <input {...register('name')} />
+          </div>
 
-        <>
-          <label>Age</label>
-          <input type="number" {...register('age')} />
-        </>
+          <div>
+            <label>Age</label>
+            <input type="number" {...register('age')} />
+          </div>
 
-        <input type="submit" value="Submit" />
-      </form>
+          <input type="submit" value="Submit" />
+        </form>
+      </>
     </>
   );
 };

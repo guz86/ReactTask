@@ -1,0 +1,25 @@
+.uncontrolledForm {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  max-width: 400px;
+}
+
+.uncontrolledForm div {
+  display: flex;
+  justify-content: space-between;
+}
+
+.uncontrolledForm label {
+  margin-bottom: 0.5rem;
+}
+
+.uncontrolledForm input {
+  width: 250px;
+}
+
+.uncontrolledForm input[type='submit'] {
+  align-self: center;
+  width: 100px;
+  height: 30px;
+}

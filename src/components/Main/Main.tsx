@@ -9,11 +9,11 @@ export const Main = () => {
 
       <>
         {user.name && user.age ? (
-          <>
+          <div className="uncontrolled">
             <h2>Uncontrolled Form Data</h2>
             <p>Name: {user.name}</p>
             <p>Age: {user.age}</p>
-          </>
+          </div>
         ) : (
           <p>No data available</p>
         )}
