@@ -8,6 +8,7 @@ interface IFormInput {
   name: string;
   age: number;
   email: string;
+  password: string;
 }
 
 export const UncontrolledForm = () => {
@@ -18,13 +19,32 @@ export const UncontrolledForm = () => {
     name: '',
     age: 0,
     email: '',
+    password: '',
   });
   const [errors, setErrors] = useState<
     Partial<Record<keyof IFormInput, string>>
   >({});
 
+  const [passwordStrength, setPasswordStrength] = useState<string>('');
+  const [confirmPassword, setConfirmPassword] = useState<string>('');
+
+  const checkPasswordStrength = (password: string) => {
+    const strengthRequirements = [/[A-Z]/, /[a-z]/, /[0-9]/, /[\W_]/];
+
+    const metRequirements = strengthRequirements.every((regex) =>
+      regex.test(password)
+    );
+    if (metRequirements) return 'Strong';
+    if (password.length >= 8) return 'Moderate';
+    return 'Weak';
+  };
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
+
+    if (name === 'password') {
+      setPasswordStrength(checkPasswordStrength(value));
+    }
 
     setFormData((prevData) => ({
       ...prevData,
@@ -32,10 +52,18 @@ export const UncontrolledForm = () => {
     }));
   };
 
+  const handleConfirmPasswordChange = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setConfirmPassword(e.target.value);
+  };
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const newErrors: Partial<Record<keyof IFormInput, string>> = {};
+
+    // Проверка обязательных полей и их значений
     if (!formData.name) {
       newErrors.name = 'Name is required';
     } else if (!/^[A-ZА-Я]/.test(formData.name)) {
@@ -49,7 +77,22 @@ export const UncontrolledForm = () => {
     }
 
     if (isNaN(formData.age) || formData.age <= 0) {
-      newErrors.age = 'Name is required';
+      newErrors.age = 'Age must be a positive number';
+    }
+
+    if (!formData.password) {
+      newErrors.password = 'Password is required';
+    } else if (
+      !/^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[\W_]).{8,}$/.test(
+        formData.password
+      )
+    ) {
+      newErrors.password =
+        'Password must include at least 1 uppercase letter, 1 lowercase letter, 1 number, and 1 special character';
+    }
+
+    if (formData.password !== confirmPassword) {
+      newErrors.password = 'Passwords must match';
     }
 
     if (Object.keys(newErrors).length > 0) {
@@ -57,8 +100,9 @@ export const UncontrolledForm = () => {
       return;
     }
 
-    dispatch(setUserData(formData));
-    setFormData({ name: '', age: 0, email: '' });
+    dispatch(setUserData({ ...formData, password: formData.password }));
+    setFormData({ name: '', age: 0, email: '', password: '' });
+    setConfirmPassword('');
     navigate('/');
   };
 
@@ -104,6 +148,36 @@ export const UncontrolledForm = () => {
         </div>
         <div>
           {errors.email && <p className="error-message">{errors.email}</p>}
+        </div>
+
+        <div>
+          <label htmlFor="password">
+            Password (
+            <span className="password-strength">{passwordStrength}</span>)
+          </label>
+          <input
+            id="password"
+            name="password"
+            type="password"
+            value={formData.password}
+            onChange={handleChange}
+          />
+        </div>
+
+        <div>
+          <label htmlFor="confirmPassword">Confirm Password</label>
+          <input
+            id="confirmPassword"
+            name="confirmPassword"
+            type="password"
+            value={confirmPassword}
+            onChange={handleConfirmPasswordChange}
+          />
+        </div>
+        <div>
+          {errors.password && (
+            <p className="error-message">{errors.password}</p>
+          )}
         </div>
 
         <input type="submit" value="Submit" />

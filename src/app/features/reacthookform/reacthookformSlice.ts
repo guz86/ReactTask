@@ -4,12 +4,14 @@ interface FormState {
   name: string;
   age: number;
   email: string;
+  password: string;
 }
 
 const initialState: FormState = {
   name: '',
   age: 0,
   email: '',
+  password: '',
 };
 
 const reacthookformSlice = createSlice({
@@ -20,6 +22,7 @@ const reacthookformSlice = createSlice({
       state.name = action.payload.name;
       state.age = action.payload.age;
       state.email = action.payload.email;
+      state.password = action.payload.password;
     },
   },
 });
