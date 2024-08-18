@@ -3,11 +3,13 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 interface FormState {
   name: string;
   age: number;
+  email: string;
 }
 
 const initialState: FormState = {
   name: '',
   age: 0,
+  email: '',
 };
 
 const reacthookformSlice = createSlice({
@@ -17,6 +19,7 @@ const reacthookformSlice = createSlice({
     setUserData: (state, action: PayloadAction<FormState>) => {
       state.name = action.payload.name;
       state.age = action.payload.age;
+      state.email = action.payload.email;
     },
   },
 });

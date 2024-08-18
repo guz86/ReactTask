@@ -7,7 +7,7 @@ import './UncontrolledForm.css';
 interface IFormInput {
   name: string;
   age: number;
-  // email: string;
+  email: string;
   // password: string;
   // confirmPassword: string;
   // gender: 'male' | 'female' | 'other';
@@ -74,6 +74,26 @@ export const UncontrolledForm = () => {
           <div>
             {errors.age && (
               <p className="error-message">{errors.age.message}</p>
+            )}
+          </div>
+
+          <div>
+            <label htmlFor="email">Email</label>
+            <input
+              id="email"
+              type="email"
+              {...register('email', {
+                required: 'Email is required',
+                pattern: {
+                  value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                  message: 'Invalid email address',
+                },
+              })}
+            />
+          </div>
+          <div>
+            {errors.email && (
+              <p className="error-message">{errors.email.message}</p>
             )}
           </div>
 
