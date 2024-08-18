@@ -1,0 +1,29 @@
+.country-selector {
+  position: relative;
+  width: 100%;
+}
+
+.country-list {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: #353434;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  max-height: 150px;
+  overflow-y: auto;
+  z-index: 1000;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.country-list-item {
+  padding: 8px 12px;
+  cursor: pointer;
+}
+
+.country-list-item:hover {
+  background-color: #363434;
+}

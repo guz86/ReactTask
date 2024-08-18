@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { useAppDispatch } from '../../app/store';
-import { setUserData } from '../../app/features/reacthookform/reacthookformSlice';
+import { setUserData } from '../../app/features/formSlice';
 import { useNavigate } from 'react-router-dom';
+import { CountrySelector } from '../CountrySelector/CountrySelector';
 import './UncontrolledForm.css';
 
 interface IFormInput {
@@ -12,6 +13,7 @@ interface IFormInput {
   gender: string;
   termsAccepted: boolean;
   profilePicture: string;
+  selectedCountry: string;
 }
 
 export const UncontrolledForm = () => {
@@ -26,6 +28,7 @@ export const UncontrolledForm = () => {
     gender: '',
     termsAccepted: false,
     profilePicture: '',
+    selectedCountry: '',
   });
   const [errors, setErrors] = useState<
     Partial<Record<keyof IFormInput, string>>
@@ -34,6 +37,7 @@ export const UncontrolledForm = () => {
 
   const [passwordStrength, setPasswordStrength] = useState<string>('');
   const [confirmPassword, setConfirmPassword] = useState<string>('');
+  const [selectedCountry, setSelectedCountry] = useState<string>('');
 
   const checkPasswordStrength = (password: string) => {
     const strengthRequirements = [/[A-Z]/, /[a-z]/, /[0-9]/, /[\W_]/];
@@ -153,7 +157,13 @@ export const UncontrolledForm = () => {
       newErrors.profilePicture = 'Profile picture is required';
     }
 
-    dispatch(setUserData({ ...formData, password: formData.password }));
+    dispatch(
+      setUserData({
+        ...formData,
+        password: formData.password,
+        selectedCountry: selectedCountry,
+      })
+    );
     setFormData({
       name: '',
       age: 0,
@@ -162,6 +172,7 @@ export const UncontrolledForm = () => {
       gender: '',
       termsAccepted: false,
       profilePicture: '',
+      selectedCountry: '',
     });
     setConfirmPassword('');
     navigate('/');
@@ -305,6 +316,10 @@ export const UncontrolledForm = () => {
           />
         </div>
         <div>{imageError && <p className="error-message">{imageError}</p>}</div>
+
+        <div>
+          <CountrySelector setSelectedCountry={setSelectedCountry} />
+        </div>
 
         <input type="submit" value="Submit" />
       </form>

@@ -22,6 +22,7 @@ export const Main = () => {
               alt="User Avatar"
               style={{ width: '150px', height: '150px' }}
             />
+            <p>Country: {user.selectedCountry}</p>
           </div>
         ) : (
           <p>No data available</p>

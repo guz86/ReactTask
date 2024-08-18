@@ -8,6 +8,7 @@ interface FormState {
   gender: string;
   termsAccepted: boolean;
   profilePicture: string;
+  selectedCountry: string;
 }
 
 const initialState: FormState = {
@@ -18,6 +19,7 @@ const initialState: FormState = {
   gender: '',
   termsAccepted: false,
   profilePicture: '',
+  selectedCountry: '',
 };
 
 const reacthookformSlice = createSlice({
@@ -32,9 +34,13 @@ const reacthookformSlice = createSlice({
       state.gender = action.payload.gender;
       state.termsAccepted = action.payload.termsAccepted;
       state.profilePicture = action.payload.profilePicture;
+      state.selectedCountry = action.payload.selectedCountry;
+    },
+    setSelectedCountry: (state, action: PayloadAction<string>) => {
+      state.selectedCountry = action.payload;
     },
   },
 });
-export const { setUserData } = reacthookformSlice.actions;
+export const { setUserData, setSelectedCountry } = reacthookformSlice.actions;
 
 export default reacthookformSlice.reducer;
