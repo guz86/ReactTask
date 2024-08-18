@@ -17,6 +17,11 @@ export const Main = () => {
             <p>Password: {user.password}</p>
             <p>Gender: {user.gender}</p>
             <p>Terms accepted: {user.termsAccepted.toString()}</p>
+            <img
+              src={user.profilePicture}
+              alt="User Avatar"
+              style={{ width: '150px', height: '150px' }}
+            />
           </div>
         ) : (
           <p>No data available</p>

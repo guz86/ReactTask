@@ -11,6 +11,7 @@ interface IFormInput {
   password: string;
   gender: string;
   termsAccepted: boolean;
+  profilePicture: string;
 }
 
 export const UncontrolledForm = () => {
@@ -24,10 +25,12 @@ export const UncontrolledForm = () => {
     password: '',
     gender: '',
     termsAccepted: false,
+    profilePicture: '',
   });
   const [errors, setErrors] = useState<
     Partial<Record<keyof IFormInput, string>>
   >({});
+  const [imageError, setImageError] = useState<string | null>(null);
 
   const [passwordStrength, setPasswordStrength] = useState<string>('');
   const [confirmPassword, setConfirmPassword] = useState<string>('');
@@ -76,6 +79,31 @@ export const UncontrolledForm = () => {
     }));
   };
 
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const validExtensions = ['image/png', 'image/jpeg'];
+    if (!validExtensions.includes(file.type)) {
+      setImageError('Invalid file type. Only PNG and JPEG are allowed.');
+      return;
+    }
+    if (file.size > 5 * 1024 * 1024) {
+      setImageError('File size exceeds 5MB.');
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setFormData((prevData) => ({
+        ...prevData,
+        profilePicture: reader.result as string,
+      }));
+      setImageError(null);
+    };
+    reader.readAsDataURL(file);
+  };
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -121,6 +149,10 @@ export const UncontrolledForm = () => {
       return;
     }
 
+    if (!formData.profilePicture) {
+      newErrors.profilePicture = 'Profile picture is required';
+    }
+
     dispatch(setUserData({ ...formData, password: formData.password }));
     setFormData({
       name: '',
@@ -129,6 +161,7 @@ export const UncontrolledForm = () => {
       password: '',
       gender: '',
       termsAccepted: false,
+      profilePicture: '',
     });
     setConfirmPassword('');
     navigate('/');
@@ -260,6 +293,18 @@ export const UncontrolledForm = () => {
             <p className="error-message">{errors.termsAccepted}</p>
           )}
         </div>
+
+        <div>
+          <label htmlFor="profilePicture">Profile Picture</label>
+          <input
+            id="profilePicture"
+            name="profilePicture"
+            type="file"
+            accept="image/png, image/jpeg"
+            onChange={handleFileChange}
+          />
+        </div>
+        <div>{imageError && <p className="error-message">{imageError}</p>}</div>
 
         <input type="submit" value="Submit" />
       </form>

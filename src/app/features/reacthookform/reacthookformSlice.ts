@@ -7,6 +7,7 @@ interface FormState {
   password: string;
   gender: string;
   termsAccepted: boolean;
+  profilePicture: string;
 }
 
 const initialState: FormState = {
@@ -16,6 +17,7 @@ const initialState: FormState = {
   password: '',
   gender: '',
   termsAccepted: false,
+  profilePicture: '',
 };
 
 const reacthookformSlice = createSlice({
@@ -29,6 +31,7 @@ const reacthookformSlice = createSlice({
       state.password = action.payload.password;
       state.gender = action.payload.gender;
       state.termsAccepted = action.payload.termsAccepted;
+      state.profilePicture = action.payload.profilePicture;
     },
   },
 });
