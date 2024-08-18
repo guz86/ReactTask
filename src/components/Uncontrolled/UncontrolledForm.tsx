@@ -9,6 +9,7 @@ interface IFormInput {
   age: number;
   email: string;
   password: string;
+  gender: string;
 }
 
 export const UncontrolledForm = () => {
@@ -20,6 +21,7 @@ export const UncontrolledForm = () => {
     age: 0,
     email: '',
     password: '',
+    gender: '',
   });
   const [errors, setErrors] = useState<
     Partial<Record<keyof IFormInput, string>>
@@ -56,6 +58,13 @@ export const UncontrolledForm = () => {
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
     setConfirmPassword(e.target.value);
+  };
+
+  const handleGenderChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      gender: e.target.value,
+    }));
   };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -101,7 +110,7 @@ export const UncontrolledForm = () => {
     }
 
     dispatch(setUserData({ ...formData, password: formData.password }));
-    setFormData({ name: '', age: 0, email: '', password: '' });
+    setFormData({ name: '', age: 0, email: '', password: '', gender: '' });
     setConfirmPassword('');
     navigate('/');
   };
@@ -178,6 +187,42 @@ export const UncontrolledForm = () => {
           {errors.password && (
             <p className="error-message">{errors.password}</p>
           )}
+        </div>
+
+        <div>
+          <label>Gender</label>
+          <div className="gender">
+            <label>
+              <input
+                type="radio"
+                name="gender"
+                value="male"
+                checked={formData.gender === 'male'}
+                onChange={handleGenderChange}
+              />
+              Male
+            </label>
+            <label>
+              <input
+                type="radio"
+                name="gender"
+                value="female"
+                checked={formData.gender === 'female'}
+                onChange={handleGenderChange}
+              />
+              Female
+            </label>
+            <label>
+              <input
+                type="radio"
+                name="gender"
+                value="other"
+                checked={formData.gender === 'other'}
+                onChange={handleGenderChange}
+              />
+              Other
+            </label>
+          </div>
         </div>
 
         <input type="submit" value="Submit" />

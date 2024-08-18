@@ -15,6 +15,7 @@ export const Main = () => {
             <p>Age: {user.age}</p>
             <p>Email: {user.email}</p>
             <p>Password: {user.password}</p>
+            <p>Gender: {user.gender}</p>
           </div>
         ) : (
           <p>No data available</p>

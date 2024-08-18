@@ -47,3 +47,9 @@
   margin: 0rem;
   font-size: 0.7em;
 }
+
+.gender label {
+  display: flex;
+  gap: 0rem;
+  max-width: 100px;
+}
