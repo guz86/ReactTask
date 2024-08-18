@@ -162,6 +162,7 @@ export const UncontrolledForm = () => {
         ...formData,
         password: formData.password,
         selectedCountry: selectedCountry,
+        isNewData: false,
       })
     );
     setFormData({

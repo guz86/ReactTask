@@ -9,6 +9,7 @@ interface FormState {
   termsAccepted: boolean;
   profilePicture: string;
   selectedCountry: string;
+  isNewData: boolean;
 }
 
 const initialState: FormState = {
@@ -20,6 +21,7 @@ const initialState: FormState = {
   termsAccepted: false,
   profilePicture: '',
   selectedCountry: '',
+  isNewData: false,
 };
 
 const reacthookformSlice = createSlice({
@@ -35,12 +37,17 @@ const reacthookformSlice = createSlice({
       state.termsAccepted = action.payload.termsAccepted;
       state.profilePicture = action.payload.profilePicture;
       state.selectedCountry = action.payload.selectedCountry;
+      state.isNewData = true;
     },
     setSelectedCountry: (state, action: PayloadAction<string>) => {
       state.selectedCountry = action.payload;
     },
+    resetNewDataFlag: (state) => {
+      state.isNewData = false;
+    },
   },
 });
-export const { setUserData, setSelectedCountry } = reacthookformSlice.actions;
+export const { setUserData, setSelectedCountry, resetNewDataFlag } =
+  reacthookformSlice.actions;
 
 export default reacthookformSlice.reducer;
