@@ -3,6 +3,7 @@
   flex-direction: column;
   gap: 1rem;
   max-width: 400px;
+  margin: auto;
 }
 
 .uncontrolledForm div {
@@ -16,10 +17,28 @@
 
 .uncontrolledForm input {
   width: 250px;
+  padding: 0.5rem;
+  box-sizing: border-box;
+}
+
+.uncontrolledForm input[type='number'] {
+  -moz-appearance: textfield;
+}
+
+.uncontrolledForm input[type='number']::-webkit-inner-spin-button,
+.uncontrolledForm input[type='number']::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
 
 .uncontrolledForm input[type='submit'] {
   align-self: center;
   width: 100px;
   height: 30px;
+  cursor: pointer;
+}
+.error-message {
+  color: red;
+  margin: 0rem;
+  font-size: 0.7em;
 }

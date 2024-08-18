@@ -4,14 +4,28 @@ import { setUserData } from '../../app/features/reacthookform/reacthookformSlice
 import { useNavigate } from 'react-router-dom';
 import './UncontrolledForm.css';
 
+interface IFormInput {
+  name: string;
+  age: number;
+  // email: string;
+  // password: string;
+  // confirmPassword: string;
+  // gender: 'male' | 'female' | 'other';
+  // terms: boolean;
+  // picture: FileList;
+  // country: string;
+}
+
 export const UncontrolledForm = () => {
-  interface IFormInput {
-    name: string;
-    age: number;
-  }
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const { register, handleSubmit, reset } = useForm<IFormInput>();
+
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<IFormInput>();
 
   const onSubmit: SubmitHandler<IFormInput> = (data) => {
     dispatch(setUserData(data));
@@ -25,13 +39,42 @@ export const UncontrolledForm = () => {
       <>
         <form className="uncontrolledForm" onSubmit={handleSubmit(onSubmit)}>
           <div>
-            <label>Name</label>
-            <input {...register('name')} />
+            <label htmlFor="name">Name</label>
+            <input
+              id="name"
+              {...register('name', {
+                required: 'Name is required',
+                validate: (value) =>
+                  /^[A-ZА-Я]/.test(value) ||
+                  'Name must start with an uppercase letter',
+              })}
+            />
+          </div>
+          <div>
+            {errors.name && (
+              <p className="error-message">{errors.name.message}</p>
+            )}
           </div>
 
           <div>
-            <label>Age</label>
-            <input type="number" {...register('age')} />
+            <label htmlFor="age">Age</label>
+            <input
+              id="age"
+              type="number"
+              {...register('age', {
+                required: 'Age is required',
+                valueAsNumber: true,
+                validate: {
+                  positive: (value) =>
+                    value > 0 || 'Age must be a positive number',
+                },
+              })}
+            />
+          </div>
+          <div>
+            {errors.age && (
+              <p className="error-message">{errors.age.message}</p>
+            )}
           </div>
 
           <input type="submit" value="Submit" />
