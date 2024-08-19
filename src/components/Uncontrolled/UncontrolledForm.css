@@ -1,0 +1,62 @@
+.uncontrolledForm {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  max-width: 400px;
+  margin: auto;
+}
+
+.uncontrolledForm div {
+  display: flex;
+  justify-content: space-between;
+}
+
+.uncontrolledForm label {
+  margin-bottom: 0.5rem;
+}
+
+.uncontrolledForm input {
+  width: 250px;
+  padding: 0.5rem;
+  box-sizing: border-box;
+}
+
+.uncontrolledForm input[type='number'] {
+  -moz-appearance: textfield;
+}
+
+.uncontrolledForm input[type='number']::-webkit-inner-spin-button,
+.uncontrolledForm input[type='number']::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.uncontrolledForm input[type='submit'] {
+  align-self: center;
+  width: 100px;
+  height: 30px;
+  cursor: pointer;
+}
+.error-message {
+  color: red;
+  margin: 0rem;
+  font-size: 0.7em;
+}
+.password-strength {
+  color: rgb(131, 164, 168);
+  margin: 0rem;
+  font-size: 0.7em;
+}
+
+.gender label {
+  display: flex;
+  gap: 0rem;
+  max-width: 100px;
+}
+
+.checkbox label {
+  display: flex;
+  gap: 0rem;
+  max-width: 100px;
+  justify-content: space-evenly;
+}
